@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>添加公告</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			showTop();
+		})
+		function showTop(){
+			 $.ajax({
+				    type: "POST",	   
+				    url: "top.action",	    
+				    async: false,
+				    data: {},
+				    success: function(msg){
+				    	var oldHtml = document.getElementById("headerBar").innerHTML;
+				    	document.getElementById("headerBar").innerHTML='';
+				    	document.getElementById("headerBar").innerHTML=msg + oldHtml;	  
+				    	document.getElementById("headerBar").style.display="block";	    		 
+				    },
+				    error: function(XMLHttpRequest, textStatus, errorThrown){
+					 alert("没有对应数据");
+					 alert(XMLHttpRequest+","+textStatus+","+errorThrown);
+				   }
+				  });
+		}
+		function check(){
+			if($("#infoContext").val()==''){
+				alert("公告内容不可以为空！");
+				return;
+			}
+			$("form")[0].action = "doAddInForm.action";
+			$("form")[0].submit();
+		}
+		</script>
+	</head>
+
+	<body>
+		<header class="headerBar"  id="headerBar">
+		</header>
+		<div class="hr_35"></div>
+		<div class="listTit comWidth">
+			<div class="hr_25"></div>
+			<div class="addAnswer">
+				<h3 class="addAnswer_title">公告</h3>
+				<form action="" method="post">
+					<textarea type="text" name="infoContext" id="infoContext" class="addAnswer_content" /></textarea>
+					<button type="button" class="addAnswer_btn" value="" onclick="check()">发布公告</button>
+				</form>
+			</div>
+			<ul class="question_list">
+				<#list infoList as info>
+					<li class="question_item">
+						<span class="answer_title">#${info_index+ 1 }</span>
+						<span class="answer_content">${ info.infoContext}</span>
+					</li>
+				</#list>
+			</ul>
+		</div>
+	</body>
+
+</html>

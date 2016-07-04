@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>用户管理</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			showTop();
+		})
+		function showTop(){
+			 $.ajax({
+				    type: "POST",	   
+				    url: "top.action",	    
+				    async: false,
+				    data: {},
+				    success: function(msg){
+				    	var oldHtml = document.getElementById("headerBar").innerHTML;
+				    	document.getElementById("headerBar").innerHTML='';
+				    	document.getElementById("headerBar").innerHTML=msg + oldHtml;	  
+				    	document.getElementById("headerBar").style.display="block";	    		 
+				    },
+				    error: function(XMLHttpRequest, textStatus, errorThrown){
+					 alert("没有对应数据");
+					 alert(XMLHttpRequest+","+textStatus+","+errorThrown);
+				   }
+				  });
+		}
+		</script>
+	</head>
+
+	<body>
+		<header class="headerBar"  id="headerBar">
+		</header>
+		<div class="hr_35"></div>
+		<div class="listTit comWidth">
+			<h2>学生列表：</h2>
+			<ul class="answer_list">
+				<#list studentList as o>
+					<li class="answer_item">
+						<span class="answer_title"><i class="answer_user">${o_index + 1}、学号：${o.studentId }</i>
+						<span class="answer_content">姓名：${o.studentName }，积分：${o.grade }，禁用开始时间：${o.unusedbegintime}</span>
+						<span class="answer_time">
+							<a href="toChangePwdPage.action?id=${o.id}&userType=${o.userType}&password=${o.password}" target="_self" class="fr">
+									<input type="submit" value="修改密码" class="operate_btn"></input>
+							</a>
+						</span>
+					</li>
+				</#list>
+				</ul>
+				<h2>教师列表：</h2>
+				<ul class="answer_list">
+				<#list teacherList as o>
+					<li class="answer_item">
+						<span class="answer_title"><i class="answer_user">${o_index + 1}、工号：${o.teacherId }</i>
+						<span class="answer_content">姓名：${o.teacherName }</span>
+						<span class="answer_time">
+							<a href="toChangePwdPage.action?id=${o.id}&userType=${o.userType}&password=${o.password}" target="_self" class="fr">
+									<input type="submit" value="修改密码" class="operate_btn"></input>
+							</a>
+						</span>
+					</li>
+				</#list>
+			</ul>
+		</div>
+	</body>
+
+</html>

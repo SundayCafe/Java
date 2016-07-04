@@ -1,0 +1,29 @@
+package com.kkk.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.kkk.entity.Admin;
+
+@Controller
+public class AdminController
+{
+	@RequestMapping({"/admin"})
+	public ModelAndView index(HttpServletResponse response, HttpServletRequest request,ModelMap mm)
+	{
+		Object user = request.getSession().getAttribute("loginUserInfo");
+		if(null == user || !(user instanceof Admin))
+		{
+			mm.put("errorMsg", "禁止访问未授权页面！");
+			return new ModelAndView("/login").addAllObjects(mm);
+		}
+		Admin admin = (Admin)user;
+		mm.put("admin", admin);
+		return new ModelAndView("admin/adminindex").addAllObjects(mm);
+	}
+}

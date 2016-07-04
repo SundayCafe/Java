@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkk.dao.IQuestionDao">
+
+	<select id="searchQuestionsByKeyWords" parameterType="map" resultType="map">
+		Select a.id as questionid,b.id as replyid,b.repContent,b.repDatetime,b.state,b.userId,a.queTitle
+		from  question_tab a left join (SELECT * FROM reply_tab GROUP BY questionid) b on a.id = b.questionId
+		where a.status="1" 
+		<if test="keyWord != '' and keyWord != null">
+			and a.keyWord like #{keyWord}
+		</if>
+		<if test="teacherid != '' and teacherid != null">
+			and a.teacherid = #{teacherid}
+		</if>
+		 order by b.repDatetime desc,a.releaseDate desc
+	</select>
+	<select id="queryAllQuestion" parameterType="map" resultType="map">
+		SELECT a.id AS questionid,b.id AS replyid,b.repContent,b.repDatetime,b.state,b.userId,a.queTitle
+		FROM  question_tab a LEFT JOIN (SELECT * FROM reply_tab GROUP BY questionid) b ON a.id = b.questionId
+		WHERE a.status="1"  ORDER BY b.repDatetime DESC,a.releaseDate
+	</select>
+	
+	<insert id="add" parameterType="com.kkk.entity.Question">
+		insert into question_tab(queTitle,queDescript,releaseDate,question_tabcol,replyHit,keyWord,userid,teacherid)
+		values(#{quetitle},#{quedescript},#{releasedate},#{questionTabcol},#{replyhit},#{keyword},#{userid},#{teacherid})
+	</insert>
+	
+	<select id="getQuestionDetailById" parameterType="map" resultType="map">
+		select * from question_tab where id=#{id} order by releaseDate desc
+	</select>
+	
+	<select id="getReplyListByQuestionid" parameterType="map" resultType="map">
+		select * from reply_tab where questionId = #{id} order by repDatetime  desc
+	</select>
+	
+	<select id="queryMyQuestions" parameterType="map" resultType="map">
+		select * from question_tab where status = "1" and userid = #{userid} 
+		<if test="'' != keyWord and null != keyWord">
+		 and keyWord like #{keyWord}
+		</if>
+		order by releaseDate desc
+	</select>
+	
+	<update id="updateQuestion" parameterType="map">
+		update question_tab set  
+		<if test="status=='' or status == null">
+			status="0"
+		</if>
+		<if test="status!='' and status != null">
+			status=#{status}
+		</if>
+		<if test="teacherid != '' and teacherid != null">
+		,teacherid=#{teacherid}
+		</if>
+		<if test="bestreplyid!='' and bestreplyid!=null">
+		,bestreplyid=#{bestreplyid}
+		</if>
+		<if test="replyHit != null and replyHit != 0">
+		,replyHit = #{replyHit} + replyHit
+		</if>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkk.dao.IAdminDao">
+	<select id="findAdminByIdPwd" parameterType="map" resultType="com.kkk.entity.Admin">
+		select id,adminId as "adminid",password from admin_tab where adminId=#{userId} and password=#{passWord}
+	</select>
+</mapper>

@@ -1,0 +1,10 @@
+<a href="student.action" class="welcome_tit fl"  target="parent">西工答疑 · 成就梦想</a>
+<span class="active_user">当前用户
+
+	<i class="user_name">${student.studentname}</i>	&nbsp;
+	<a href="javascript:void(0)"  target="_self">我的积分[${student.grade}]</a> &nbsp;
+	<a href="myQuestionPage.action"  target="parent">我的提问  [未读(${unReadNums})]</a> &nbsp;
+	<a href="addQuestionPage.action"  target="parent">我要提问</a> &nbsp;
+	
+	<a href="logout.action"	title="退出并返回登录页面" target="parent">退出</a>
+</span>

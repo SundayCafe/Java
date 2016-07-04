@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkk.dao.ITeacherDao">
+	<select id="findTeacherByIdPwd" parameterType="map" resultType="com.kkk.entity.Teacher">
+		select id,teacherId as "teacherid",teacherName as "teachername",password
+			from teacher_tab where teacherId=#{userId} and password=#{passWord}
+	</select>
+	
+	<select id="findSomeTeachers" parameterType="map" resultType="map">
+		select * from teacher_tab
+	</select>
+</mapper>

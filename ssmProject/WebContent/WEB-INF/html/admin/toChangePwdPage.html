@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>处理事项页面</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			showTop();
+		})
+		function showTop(){
+			 $.ajax({
+				    type: "POST",	   
+				    url: "top.action",	    
+				    async: false,
+				    data: {},
+				    success: function(msg){
+				    	var oldHtml = document.getElementById("headerBar").innerHTML;
+				    	document.getElementById("headerBar").innerHTML='';
+				    	document.getElementById("headerBar").innerHTML=msg + oldHtml;	  
+				    	document.getElementById("headerBar").style.display="block";	    		 
+				    },
+				    error: function(XMLHttpRequest, textStatus, errorThrown){
+					 alert("没有对应数据");
+					 alert(XMLHttpRequest+","+textStatus+","+errorThrown);
+				   }
+				  });
+		}
+		function check(){
+			if($("#infoContext").val()==''){
+				alert("公告内容不可以为空！");
+				return;
+			}
+			$("form")[0].action = "doAddInForm.action";
+			$("form")[0].submit();
+		}
+		</script>
+	</head>
+
+	<body>
+		<header class="headerBar"  id="headerBar">
+		</header>
+		<div class="hr_35"></div>
+		<form action="doChangePwd.action" method="post">
+		<div class="answer_title answer_user" style="text-align: center;font-size: 20px">
+			<div><input type="hidden" id="id"  name="id" value="${id}"></div>
+			<div><input type="hidden" id="userType"  name="userType" value="${usertype}"></div>
+			<div>旧密码：<input type="password" id="password"  name="password" readonly="readonly"  value="${password}" class="input_change_pwd"></div>
+			<div>新密码：<input type="password" id="newpassword" name="newpassword" value="" required="required" placeholder="请输入新密码"  class="input_change_pwd"> </div>
+			<div><input type="submit" value="提交"  class="operate_btn"></div>
+		</form>
+		</div>
+	</body>
+
+</html>

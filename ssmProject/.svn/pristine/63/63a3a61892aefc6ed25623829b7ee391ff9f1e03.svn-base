@@ -1,0 +1,5 @@
+<a href="teacher.action" class="welcome_tit fl">西工答疑 · 成就梦想</a>
+<span class="active_user">当前用户<i class="user_name">${teacher.teachername}</i>
+	&nbsp;&nbsp;<a href="myUnDoQuestion.action">待解答[未解(${unReadNums})]</a>
+	&nbsp;<a href="logout.action" title="退出并返回登录页面">退出</a>
+</span>

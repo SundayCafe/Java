@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>问题详情</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				showTop();
+			})
+			function showTop(){
+				 $.ajax({
+					    type: "POST",	   
+					    url: "top.action",	    
+					    async: false,
+					    data: {},
+					    success: function(msg){
+					    	document.getElementById("headerBar").innerHTML='';
+					    	document.getElementById("headerBar").innerHTML=msg;	  
+					    	document.getElementById("headerBar").style.display="block";	    		 
+					    },
+					    error: function(XMLHttpRequest, textStatus, errorThrown){
+						 alert("没有对应数据");
+						 alert(XMLHttpRequest+","+textStatus+","+errorThrown);
+					   }
+					  });
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="headerBar" id="headerBar">
+			<h3 class="welcome_tit fl">西工答疑 · 知识之渊</h3>
+		</header>
+		<div class="hr_35"></div>
+		<div class="listTit comWidth">
+			<div class="q_title_content">
+				<h3 class="question_title">${question.queTitle}</h3>
+				<div class="q_details">
+					<h2 class="q_descript">详细描述</h2> ${question.queDescript}
+					<br />
+					<input type="text" value="提问者" class="q_author" />
+					<span class="answer_user">${question.userid}</span>
+				</div>
+				<#list replyList as reply>
+					<li class="answer_item">
+						<#if question.bestreplyid == reply.id>
+							<span class="answer_title">#${reply_index + 1}<i class="answer_user">${reply.userId}</i>&nbsp;&nbsp;&nbsp;回答
+							<span class=" answer_user bestAns">(最佳答案)</span>
+							：</span>
+							<span class="answer_content">${reply.repContent}</span>
+							<span class="answer_time">
+							${reply.repDatetime}
+							</span>
+						</#if>
+					</li>
+				</#list>
+			</div>
+			<div class="hr_25"></div>
+			<div class="addAnswer">
+				<h3 class="addAnswer_title">添加回答</h3>
+				<form action="addReply.action" method="post" >
+					<input type="hidden" name="questionid" value="${question.id}">
+					<textarea type="text" name="repcontent" class="addAnswer_content" /></textarea>
+					<button type="submit" class="addAnswer_btn" value="">提交答案</button>
+				</form>
+			</div>
+			<div class="hr_25"></div>
+			<ul class="answer_list">
+				<li class="answer_item"><h3 class="answer_num">回答</h3></li>
+				<#list replyList as reply>
+				<li class="answer_item">
+					<span class="answer_title">#${reply_index + 1}<i class="answer_user">${reply.userId}</i>&nbsp;&nbsp;&nbsp;回答
+					<#if question.bestreplyid == reply.id>
+						<span class=" answer_user bestAns">(最佳答案)</span>
+					</#if>
+					：</span>
+					<span class="answer_content">${reply.repContent}</span>
+					<span class="answer_time">
+						${reply.repDatetime}
+						<#if userType != '0'>
+						<a href="addReport.action?replyId=${reply.id}" target="_self" class="fr">
+								<input type="submit" value="举报" class="answer_btn"></input>
+							</a>
+						</#if>
+						<#if userType == '1'>
+						<#if question.bestreplyid == ''>
+							<a href="setBestReplyForQuestion.action?id=${question.id}&replyid=${reply.id}" target="_self" class="fr">
+								<input type="submit" value="最佳" class="answer_btn"></input>
+							</a>
+						</#if>
+						</#if>
+					</span>
+				</li>
+				</#list>
+			</ul>
+		</div>
+	</body>
+
+</html>

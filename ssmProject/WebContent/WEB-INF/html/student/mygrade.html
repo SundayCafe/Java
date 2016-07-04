@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>我的积分</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				showTop();
+			})
+			function showTop(){
+				 $.ajax({
+					    type: "POST",	   
+					    url: "top.action",	    
+					    async: false,
+					    data: {},
+					    success: function(msg){
+					    	var oldHtml = document.getElementById("headerBar").innerHTML;
+					    	document.getElementById("headerBar").innerHTML='';
+					    	document.getElementById("headerBar").innerHTML=msg + oldHtml;	  
+					    	document.getElementById("headerBar").style.display="block";	    		 
+					    },
+					    error: function(XMLHttpRequest, textStatus, errorThrown){
+						 alert("没有对应数据");
+						 alert(XMLHttpRequest+","+textStatus+","+errorThrown);
+					   }
+					  });
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="headerBar"  id="headerBar">
+		</header>
+		<div class="hr_35"></div>
+		<div class="listTit comWidth">
+			<div class="hr_25"></div>
+			<span class="grade_content">当前积分：<i>${student.grade}分</i></span>
+		</div>
+	</body>
+
+</html>

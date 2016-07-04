@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkk.dao.IStudentDao">
+	<select id="findStudentByIdPwd" parameterType="map" resultType="com.kkk.entity.Student">
+		select 
+			id,studentId as "studentid",studentName as "studentname",password,grade,
+			unusedbegintime
+			from student_tab where studentId=#{userId} and password=#{passWord}
+	</select>
+	
+	<update id="update" parameterType="com.kkk.entity.Student">
+		update student_tab set studentId = studentId
+		<if test="grade != '' and grade != null">
+			,grade=#{grade}
+		</if>
+		<if test="unusedbegintime != null">
+			,unusedbegintime=#{unusedbegintime}
+		</if>
+		where 
+		<if test="studentid != '' and studentid != null">
+			studentId = #{studentid}
+		</if>
+		<if test="id != '' and id != null and studentid ==null">
+			id = #{id}
+		</if>
+	</update>
+</mapper>

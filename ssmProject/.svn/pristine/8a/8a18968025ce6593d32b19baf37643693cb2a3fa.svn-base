@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>登录页面</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+	</head>
+
+	<body>
+		<header class="headerBar">
+			<h3 class="welcome_tit">西工答疑 · 欢迎登录</h3>
+		</header>
+		<div class="hr_35"></div>
+		<div class="counter login_back">
+			<div class="login_section">
+				<form action="login.action" name="loginform" id="loginForm" method="post">
+					<section class="login_cont comWidth">
+						<ul class="login">
+							<li class="errorMsg">${errorMsg?default("") }</li>
+							<li class="li_title">用户类型</li>
+							<li>
+								<select id="userType" name="userType" class="login_input user_icon">
+									<option value="">请选择用户类型</option>
+									<option value="0">管理员</option>
+									<option value="1">教师</option>
+									<option value="2" selected="selected">学生</option>
+								</select>
+							</li>
+							<li class="li_title">用户名</li>
+							<li><input type="text" name="userName" id="userName" value="130600001" class="login_input user_icon" /></li>
+							<li class="li_title">密码</li>
+							<li><input type="password" name="userPwd" id="userPwd" value="111" class="login_input lock" /></li>
+							<li><input type="submit" name="loginBtn" id="loginBtn" value="登录" class="login_submit" /></li>
+						</ul>
+					</section>
+				</form>
+			</div>
+		</div>
+	</body>
+
+</html>

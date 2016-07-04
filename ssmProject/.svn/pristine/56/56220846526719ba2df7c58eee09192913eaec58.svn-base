@@ -1,0 +1,72 @@
+package com.kkk.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.kkk.common.UserType;
+import com.kkk.controller.info.LoginInfo;
+import com.kkk.service.ILoginService;
+import com.mysql.jdbc.StringUtils;
+
+@Controller
+@RequestMapping({"/"})
+public class LoginController {
+	@Autowired
+	ILoginService loginSercice;
+	@RequestMapping({"/index"})
+	public ModelAndView index(HttpServletResponse response, HttpServletRequest request,ModelMap mm)
+	{
+		return new ModelAndView("/login");
+	}
+	
+	
+	@RequestMapping({"/login"})
+	public ModelAndView login(LoginInfo loginInfo,HttpServletResponse response, HttpServletRequest request,ModelMap mm)
+	{
+		if(null == loginInfo || StringUtils.isNullOrEmpty(loginInfo.getUserType()))
+		{
+			mm.put("errorMsg", "请选择用户类型");
+			return new ModelAndView("login").addAllObjects(mm);
+		}
+		if(StringUtils.isNullOrEmpty(loginInfo.getUserName()))
+		{
+			mm.put("errorMsg", "用户名不能为空！");
+			return new ModelAndView("login").addAllObjects(mm);
+		}
+		if(StringUtils.isNullOrEmpty(loginInfo.getUserPwd()))
+		{
+			mm.put("errorMsg", "密码不能为空！");
+			return new ModelAndView("login").addAllObjects(mm);
+		}
+		String userType = loginInfo.getUserType(); 
+		Object userInfo = loginSercice.getUserByIdPwd(loginInfo.getUserName(), loginInfo.getUserPwd(), userType);
+		request.getSession().setAttribute("loginUserInfo", userInfo);
+		if(userType.equals(UserType.ADMIN.getValue()))
+		{
+			return new ModelAndView("redirect:admin.action");
+		}else if(userType.equals(UserType.TEACHER.getValue()))
+		{
+			return new ModelAndView("redirect:teacher.action");
+		}else if(userType.equals(UserType.STUDENT.getValue()))
+		{
+			return new ModelAndView("redirect:student.action");
+		}else{
+			mm.put("errorMsg", "未授权访问的页面!");
+			request.getSession().removeAttribute("loginUserInfo");
+			return new ModelAndView("/login").addAllObjects(mm);
+		}
+	}
+	
+	@RequestMapping({"logout"})
+	public ModelAndView logout(HttpServletRequest request)
+	{
+		request.getSession().removeAttribute("loginUserInfo");
+		return new ModelAndView("redirect:index.action");
+	}
+}

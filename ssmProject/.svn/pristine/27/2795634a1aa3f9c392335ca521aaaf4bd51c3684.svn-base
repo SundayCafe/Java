@@ -1,0 +1,184 @@
+package com.kkk.controller;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.kkk.entity.Question;
+import com.kkk.entity.Reply;
+import com.kkk.entity.Student;
+import com.kkk.entity.Teacher;
+import com.kkk.service.IQuestionService;
+import com.kkk.service.IReplyService;
+import com.kkk.service.IStudentService;
+import com.kkk.service.ITeacherService;
+import com.mysql.jdbc.StringUtils;
+
+@Controller
+public class QuestionController
+{
+	@Autowired
+	IQuestionService questionService;
+	
+	@Autowired
+	ITeacherService teacherService;
+	
+	@Autowired
+	IReplyService replyService;
+	
+	@Autowired
+	IStudentService studentService;
+	
+	@RequestMapping({"myUnDoQuestion"})
+	public ModelAndView myUnDoQuestion(HttpServletRequest request, ModelMap mm)
+	{
+		Object user = request.getSession().getAttribute("loginUserInfo");
+		Teacher teacher = (Teacher)user;
+		Map<String,String> paramMap = new HashMap<String,String>();
+		paramMap.put("teacherid", teacher.getTeacherid() + "_unread");
+		List<Map<String,Object>> questionList = questionService.searchQuestionsByKeyWords(paramMap);
+		mm.put("questionList", questionList);
+		return new ModelAndView("teacher/teacherindex").addAllObjects(mm);
+	}
+	
+	@RequestMapping({"searchQuestionByKeyWord"})
+	public ModelAndView search(String keyWord, HttpServletRequest request, ModelMap mm)
+	{
+		Map<String,String> paramMap = new HashMap<String,String>();
+		paramMap.put("keyWord", "%" + keyWord + "%");
+		List<Map<String,Object>> questionList = questionService.searchQuestionsByKeyWords(paramMap);
+		mm.put("questionList", questionList);
+		mm.put("keyWord", keyWord);
+		Object user = request.getSession().getAttribute("loginUserInfo");
+		if (user instanceof Student)
+		{
+			return new ModelAndView("student/studentindex").addAllObjects(mm);
+		}else if(user instanceof Teacher)
+		{
+			return new ModelAndView("teacher/teacherindex").addAllObjects(mm);
+		}
+		return new ModelAndView("student/studentindex").addAllObjects(mm);
+	}
+	
+	@RequestMapping({"addQuestionPage"})
+	public ModelAndView index(HttpServletRequest request,ModelMap mm)
+	{
+		Map<String,String> paramMap = new HashMap<String,String>();
+		List<Map<String,Object>> teacherList = teacherService.findSomeTeachers(paramMap);
+		mm.put("teacherList", teacherList);
+		return new ModelAndView("student/addnewquestion").addAllObjects(mm);
+	}
+	
+	@RequestMapping({"doAddQuestion"})
+	public ModelAndView doAdd(Question question,HttpServletRequest request)
+	{
+		question.setReleasedate(new Date(System.currentTimeMillis()));
+		Object user = request.getSession().getAttribute("loginUserInfo");
+		Student student = (Student)user;
+		question.setUserid(student.getStudentid());
+		if(!StringUtils.isNullOrEmpty(question.getTeacherid()))
+		{
+			question.setTeacherid(question.getTeacherid() + "_unread");
+		}
+		question.setKeyword(question.getQuetitle());
+		questionService.add(question);
+		return new ModelAndView("redirect:addQuestionPage.action");
+	}
+	/**
+	 * 问题详情页面
+	 * @param id
+	 * @param request
+	 * @param mm
+	 * @return
+	 */
+	@RequestMapping({"questionDetail"})
+	public ModelAndView detail(String id,HttpServletRequest request,ModelMap mm)
+	{
+		Map<String,String> paramMap = new HashMap<String,String>();
+		paramMap.put("id", id);
+		if(id.endsWith("_readed"))
+		{
+			paramMap.put("id", id.split("_")[0]);
+			Object user = request.getSession().getAttribute("loginUserInfo");
+			if (user instanceof Student)
+			{
+				Student student = (Student)user;
+				paramMap.put("state", "2");
+				paramMap.put("userid", student.getStudentid());
+			}else if(user instanceof Teacher)
+			{
+				Teacher teacher = (Teacher)user;
+				paramMap.put("userid", teacher.getTeacherid());
+			}
+			replyService.updateReply(paramMap);
+		}
+		Map<String,Object> question = questionService.getQuestionDetailById(paramMap);
+		mm.put("question", question);
+		List<Map<String,Object>> replyList = questionService.getReplyListByQuestionid(paramMap);
+		mm.put("replyList", replyList);
+		return new ModelAndView("questiondetails").addAllObjects(mm);
+	}
+	
+	/**
+	 * 进入我的提问页面
+	 * @param request
+	 * @param mm
+	 * @return
+	 */
+	@RequestMapping({"myQuestionPage"})
+	public ModelAndView myQuestionPage(String keyWord,HttpServletRequest request,ModelMap mm)
+	{
+		Object user = request.getSession().getAttribute("loginUserInfo");
+		Student student = (Student)user;
+		Map<String,String> paramMap = new HashMap<String,String>();
+		if(!StringUtils.isNullOrEmpty(keyWord))
+		{
+			paramMap.put("keyWord", "%" + keyWord + "%");
+		}
+		paramMap.put("userid", student.getStudentid());
+		List<Map<String,Object>> result = questionService.queryMyQuestions(paramMap);
+		mm.put("myQuestionList", result);
+		mm.put("keyWord", keyWord);
+		return new ModelAndView("student/myquestionpage").addAllObjects(mm);
+	}
+	
+	/**
+	 * 关闭问题
+	 */
+	@RequestMapping({"closeQuestion"})
+	public ModelAndView close(String id,HttpServletRequest request)
+	{
+		Map<String,String> paramMap = new HashMap<String,String>();
+		paramMap.put("id", id);
+		questionService.updateQuestion(paramMap);
+		return new ModelAndView("redirect:myQuestionPage.action");
+	}
+	
+	/**
+	 * 选为最佳答案
+	 */
+	@RequestMapping({"setBestReplyForQuestion"})
+	public ModelAndView update(String id,String replyid,HttpServletRequest request)
+	{
+		Map<String,String> paramMap = new HashMap<String,String>();
+		paramMap.put("id", id);
+		paramMap.put("status", "1");
+		paramMap.put("bestreplyid", replyid);
+		questionService.updateQuestion(paramMap);
+		//被选中的回复作者奖励5分
+		Reply reply = replyService.queryReplyById(paramMap);
+		Student student = studentService.getUserById(Integer.valueOf(reply.getUserid()));
+		student.setGrade(student.getGrade() + 5);
+		studentService.update(student);
+		return new ModelAndView("redirect:questionDetail.action?id=" + id);
+	}
+}

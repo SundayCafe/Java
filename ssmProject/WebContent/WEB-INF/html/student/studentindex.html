@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>学生首页</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				showTop();
+			})
+			function showTop(){
+				 $.ajax({
+					    type: "POST",	   
+					    url: "top.action",	    
+					    async: false,
+					    data: {},
+					    success: function(msg){
+					    	var oldHtml = document.getElementById("headerBar").innerHTML;
+					    	document.getElementById("headerBar").innerHTML='';
+					    	document.getElementById("headerBar").innerHTML=msg + oldHtml;	  
+					    	document.getElementById("headerBar").style.display="block";	    		 
+					    },
+					    error: function(XMLHttpRequest, textStatus, errorThrown){
+						 alert("没有对应数据");
+						 alert(XMLHttpRequest+","+textStatus+","+errorThrown);
+					   }
+					  });
+			}
+			
+			function search()
+			{
+				if("" == $("#keyWord").val()){
+					alert("请输入关键字");
+					return false;
+				}
+				$("form")[0].action = "searchQuestionByKeyWord.action";
+				$("form")[0].submit();
+			}
+		</script>
+	</head>
+	<body>
+		<header class="headerBar" id="headerBar">
+			<div class="search_box fr">
+				<form action="" method="post">
+					<input type="text" name="keyWord" id="keyWord" value="${keyWord?default('')}" class="search_text fl" />
+					<input type="button" name="searchBtn" id="searchBtn" value="搜 索" onclick="search()" class="search_btn fr" />
+				</form>
+			</div>
+		</header>
+		<div class="hr_35"></div>
+		<div class="listTit comWidth">
+			<ul class="question_list">
+			<#list questionList as question>
+				<li class="question_item">
+					<a href="questionDetail.action?id=${question.questionid}" class="question_title">${question.queTitle}</a>
+					<ul>
+						<li class="answer_show">
+							<span class="answer_title">#1<i class="answer_user">${question.userId}</i>&nbsp;&nbsp;&nbsp;回答：</span>
+							<span class="answer_content">${question.repContent}</span>
+							<span class="answer_time">&nbsp;&nbsp;${question.repDatetime}</span>
+						</li>
+					</ul>
+				</li>
+			</#list>
+			</ul>
+		</div>
+	</body>
+
+</html>

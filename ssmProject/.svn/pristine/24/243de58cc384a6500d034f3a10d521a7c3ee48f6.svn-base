@@ -1,0 +1,31 @@
+package com.kkk.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Select;
+
+import com.kkk.entity.Admin;
+
+public interface IAdminDao {
+
+	int deleteByPrimaryKey(Integer id);
+
+	int insert(Admin record);
+
+	int insertSelective(Admin record);
+
+	@Select("SELECT * FROM admin_tab WHERE adminId=#{adminId}")
+	Admin selectByPrimaryAdminId(String adminId);
+
+	Admin selectByPrimaryKey(Integer id);
+
+	int updateByPrimaryKeySelective(Admin record);
+
+	int updateByPrimaryKey(Admin record);
+	
+	@Select("select * from admin_tab where adminId=#{name}")
+	List<Admin> queryAllAdminByName(String name);
+	
+	Admin findAdminByIdPwd(Map<String,String> paramMap);
+}

@@ -1,0 +1,34 @@
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>添加公告</title>
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/reset.css" />
+	</head>
+
+	<body>
+		<header class="headerBar">
+			<a href="adminindex.jsp" class="welcome_tit fl">西工答疑 · 知识之渊</a>
+			<span class="active_user">当前用户<i class="user_name">admin</i>&nbsp;<a href="disposereport.jsp">处理事项</a></span>
+		</header>
+		<div class="hr_35"></div>
+		<div class="listTit comWidth">
+			<div class="hr_25"></div>
+			<div class="addAnswer">
+				<h3 class="addAnswer_title">公告</h3>
+				<form action="" method="post">
+					<textarea type="text" name="answercon" class="addAnswer_content" /></textarea>
+					<button type="submit" class="addAnswer_btn" value="">发布公告</button>
+				</form>
+			</div>
+			
+		</div>
+	</body>
+
+</html>

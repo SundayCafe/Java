@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>添加新问题</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				showTop();
+			})
+			function showTop(){
+				 $.ajax({
+					    type: "POST",	   
+					    url: "top.action",	    
+					    async: false,
+					    data: {},
+					    success: function(msg){
+					    	document.getElementById("headerBar").innerHTML='';
+					    	document.getElementById("headerBar").innerHTML=msg;	  
+					    	document.getElementById("headerBar").style.display="block";	    		 
+					    },
+					    error: function(XMLHttpRequest, textStatus, errorThrown){
+						 alert("没有对应数据");
+						 alert(XMLHttpRequest+","+textStatus+","+errorThrown);
+					   }
+					  });
+			}
+			
+			function check()
+			{
+				var quetitle = $("#quetitle").val();
+				if(''==quetitle || null == quetitle){
+					alert("标题不可为空！");
+					return false;
+				}
+				var quedescript = $("#quedescript").val();
+				if(''==quedescript || null == quedescript){
+					alert("详细描述不可为空！");
+					return false;
+				}
+				$("form")[0].submit();
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="headerBar" id="headerBar">
+		</header>
+		<div class="hr_35"></div>
+		<div class="listTit comWidth">
+			<div class="hr_25"></div>
+			<div class="addAnswer">
+				<h3 class="addAnswer_title">我要提问</h3>
+				<form action="doAddQuestion.action" method="post">
+					<input type="text" name="quetitle" id="quetitle" class="addAnswer_content question_title" placeholder="*输入标题" />
+					<textarea type="text" name="quedescript" id="quedescript" class="addAnswer_content" placeholder="详细描述"/></textarea>
+					<span class="select_teacher">
+						向老师求助：
+						
+						<#list teacherList as teacher>
+							<input type="radio" name="teacherid" id="teacherid" value="${teacher.teacherId}" class="select_item"/>
+							<i class="teacher_name">${teacher.teacherName}</i>
+						</#list>
+					</span>
+					
+					<button type="button" class="addAnswer_btn" value="" onclick="check()">发布问题</button>
+				</form>
+			</div>
+			
+		</div>
+	</body>
+
+</html>

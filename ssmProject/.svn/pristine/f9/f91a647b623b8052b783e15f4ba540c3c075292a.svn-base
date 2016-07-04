@@ -1,0 +1,229 @@
+/*公用*/
+.comWidth {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.hr_35 {
+	height: 35px;
+	overflow: hidden;
+}
+.hr_25 {
+	height: 25px;
+	overflow: hidden;
+}
+.bestAns{
+	color: red;
+	font-size: 16px
+}
+.active_user{
+	color: #FFFFFF; float: right; margin-right: 10%;
+}
+.user_name{
+	font-style: normal; padding-left: 10px; color: #F5DEB3;
+}
+/*登陆页面*/
+.headerBar{
+	width: 100%; height: 100px; background-color: #21a675; line-height: 100px;
+}
+.welcome_tit{
+	font: 22px/65px "微软雅黑";
+	color: #FFFFFF;
+	padding-left: 20%;
+	padding-top: 10px;
+}
+.li_title{
+	color: #999999;
+	font-size: 12px;
+	line-height: 20px;
+}
+
+.errorMsg{
+	color:red;
+	font-size: 16px;
+	text-align: center;
+}
+.login_input{
+	border: 1px solid #CCCCCC;
+	width: 90%;
+	height: 32px;
+	text-indent: 5px;
+	line-height: 32px/9;
+	padding-right: 9.5%;
+	margin-bottom: 10px;
+}
+.login{
+	padding: 22px 66px 25px 86px;
+}
+.login_cont{
+	width: 458px;
+	border: 1px solid #CCCCCC;
+	margin: 15px auto;
+	position: relative;
+	border-radius: 4px;
+}
+.user_icon{
+	background: url(../img/login_user.jpg) 95% center no-repeat;
+}
+.lock{
+	background: url(../img/login_lock.jpg) 95% center no-repeat;
+}
+.login_submit{
+	width: 100%;
+	height: 32px;
+	border: 1px solid #D0E4F9;
+	margin-top: 25px;
+	font-family: "宋体";
+	font-size: 15px;
+	background: url(../img/login_btn_bg.jpg) left center repeat-x;
+	cursor: pointer;
+	color: #606060;
+	font-weight: bold;
+}
+.login_radio{
+	margin: 10px 8px 5px 5px; position: relative; top: 3px; 
+}
+.radio_item{
+	font-style: normal; font-family: "微软雅黑"; color: #656565; margin-right: 10px;
+}
+/*首页*/
+.search_box {
+	width: 430px;
+	padding-top: 28px;
+	margin-right: 24%;
+}
+
+.search_text {
+	width: 350px;
+	height: 35px;
+	padding: 0 5px;
+	line-height: 35px\9;
+	background-color: #FFFFFF;
+	font-family: "微软雅黑";
+}
+.search_text:enabled{
+	-webkit-transition:border linear .2s,-webkit-box-shadow linear .5s; 
+	border-color:rgba(141,39,142,.75); 
+	-webkit-box-shadow:0 0 18px rgba(111,1,32,3); 
+}
+.search_btn {
+	width: 70px;
+	height: 35px;
+	font-size: 14px;
+	color: #FFFFFF;
+	background-color: #FF8C00;
+	cursor: pointer;
+}
+.search_btn:hover{
+	-webkit-transition:border linear .2s,-webkit-box-shadow linear .5s; 
+	border-color:rgba(141,39,142,.75); 
+	-webkit-box-shadow:0 0 18px rgba(111,1,32,3); 
+}
+.listTit {
+	height: 44px;
+	font-family: "微软雅黑", "microsoft yahei";
+	line-height: 44px;
+	margin-bottom: 10px;
+}
+/*问题内容呈现*/
+.question_list{
+	border-top: 1px solid #999999;
+}
+.question_item{
+	border-bottom: 1px solid #999999;
+}
+.question_title{
+	font-size: 24px; color: #000000; font-weight: bold;
+}
+.question_item{
+	text-indent: 5px;
+}
+.answer_show{
+	text-indent: 10px; line-height: 25px; font-size: 14px;
+}
+.answer_title,.answer_time,.q_descript{
+	color: #CCCCCC; font-size: 10px; margin-bottom: 10px;
+}
+.answer_user{
+	font-style: normal; padding-left: 20px; color: #000000; font-weight: bold;
+}
+.answer_content{
+	display: block; padding: 0 15px; line-height: 30px; text-indent: 10px;
+}
+/*详情页面*/
+.q_details{
+	border: 1px solid #CCCCCC; padding: 0 10px; line-height: 30px;
+}
+.q_descript{
+	padding: 0; margin: 0;
+}
+.q_author{
+	color: blue; background-color: wheat; font-family: "微软雅黑"; width: 50px; text-indent: 5px; margin-right: 10px;
+}
+.addAnswer_title{
+	font-size: 20px; font-weight: normal; 
+}
+.addAnswer_content{
+	border: 1px solid #999999; width: 90%; height: 150px; font-size: 20px; font-weight: normal; text-indent: 15px; margin-left: 4%; 
+}
+.addAnswer_btn{
+	width: 15%; height: 40px; background-color: red; color: #FFFFFF; font-size: 14px; font-family: "微软雅黑"; margin-top: 20px; margin-left: 80%; cursor: pointer; border: 0; display: block; 
+}
+.answer_num{
+	font-size: 24px; font-weight: normal; color: #CCCCCC; padding-left: 5px;
+}
+.answer_item{
+	float: left; border-bottom: 1px solid #999999; width: 100%;
+}
+.answer_btn,.operate_btn{
+	width: 60px; height: 30px; border: 1px solid #CCCCCC; background: #D0E4F9; margin-right: 10px; color: #656565; cursor: pointer;
+}
+/*提问页面*/
+.select_teacher{
+	display: block;
+}
+.select_item{
+	position: relative; top: 3px;
+}
+.teacher_name{
+	font-style: normal; position: relative; margin: 0 8px 0 4px;
+}
+.question_title{
+	height: 40px; margin-bottom: 10px; border-radius: 5px;
+}
+/*积分*/
+.grade_content{
+	display: block; font-size: 60px; color: red; padding: 100px 0px 0px 250px;
+}
+/*处理页面*/
+.operate_btn{
+	background-color: red; color: #FFFFFF;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

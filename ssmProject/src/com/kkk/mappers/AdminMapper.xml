@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkk.dao.IAdminDao">
+	<select id="findAdminByIdPwd" parameterType="map" resultType="com.kkk.entity.Admin">
+		select id,adminId as "adminid",password from admin_tab where adminId=#{userId} and password=#{passWord}
+	</select>
+	
+	
+	<insert id="addInfoForm" parameterType="com.kkk.entity.Inform">
+	 insert into inform_tab(infoContext,createtime) values(#{infoContext},#{createtime})
+	</insert>
+	
+	<select id="queryInfoForm" parameterType="map" resultType="map">
+		select * from inform_tab order by createtime desc
+	</select>
+	
+	<select id="queryAllReportReply" resultType="map">
+		SELECT DISTINCT a.* FROM reply_tab a,report_tab b WHERE a.id=b.replyId order by b.id desc
+	</select>
+	
+	<delete id="deleteReplyById" parameterType="int">
+		delete from reply_tab where id=#{id}
+	</delete>
+	
+	
+	<update id="updatePwd" parameterType="map">
+	<if test="userType == 1">
+	 update teacher_tab set password = #{password} where id = #{id}
+	</if>
+	<if test="userType == 0">
+	 update student_tab set password = #{password} where id = #{id}
+	</if>
+	</update>
+	
+	<select id="queryAllStudent" resultType="map">
+		select *,2 as "userType" from student_tab order by id desc
+	</select>
+	
+	<select id="queryAllTeahcer" resultType="map">
+		select *,1 as "userType" from teacher_tab order by id desc
+	</select>
+</mapper>
