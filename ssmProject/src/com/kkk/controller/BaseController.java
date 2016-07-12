@@ -12,6 +12,9 @@ import com.kkk.service.IReportService;
 import com.kkk.service.IStudentService;
 import com.kkk.service.ITeacherService;
 
+/**
+ *	service库
+ */
 @Controller
 public class BaseController
 {
